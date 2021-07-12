@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Form from 'rc-field-form';
 import {
@@ -40,6 +40,13 @@ export default function Home() {
 
   const [icsURL, setIcsURL] = useState('');
 
+  useEffect(() => {
+    try {
+      const list = JSON.parse(window.localStorage.getItem('list') || '');
+      form.setFieldsValue({ list });
+    } catch (error) {}
+  }, []);
+
   return (
     <>
       <Head>
@@ -66,6 +73,7 @@ export default function Home() {
                 setIcsURL('');
                 return;
               }
+              window.localStorage.setItem('list', JSON.stringify(value.list));
               const params = new URLSearchParams();
               value.list.forEach((item) => {
                 params.append(
@@ -150,8 +158,10 @@ export default function Home() {
           </Form>
           {icsURL && (
             <TextField
+              readOnly
               textarea
               fullwidth
+              rows={6}
               value={icsURL}
               style={{ marginTop: '48px' }}
             />
