@@ -1,0 +1,26 @@
+.row {
+  padding: 16px 0;
+}
+.main {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.type {
+  width: 120px;
+  flex: 0 0 120px;
+}
+
+.title {
+  flex: auto;
+  margin-left: 8px;
+}
+
+.date {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.button {
+  width: 100%;
+}

@@ -1,0 +1,5 @@
+body {
+  --mdc-theme-primary: #212121;
+  --mdc-theme-error: #d32f2f;
+  margin: 0;
+}
