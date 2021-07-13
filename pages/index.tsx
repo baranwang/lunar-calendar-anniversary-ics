@@ -50,6 +50,7 @@ export default function Home() {
   return (
     <>
       <Head>
+        <title>农历纪念日订阅</title>
         <link
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet"
