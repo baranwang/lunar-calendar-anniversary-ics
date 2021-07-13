@@ -24,7 +24,7 @@ export default function handler(
   const nowYear = new Date().getFullYear()
   const events: ics.EventAttributes[] = d.map(item => {
     const [title, type, ...date] = item.split(',')
-    const { cYear: year, lMonth: month, lDay: day, isLeap } = solarlunar.solar2lunar(...date)
+    const { lYear: year, lMonth: month, lDay: day, isLeap } = solarlunar.solar2lunar(...date)
     return Array.from({ length: nowYear - year + 11 }, (_, i) => {
       let solarlunarDate = solarlunar.lunar2solar(i + year, month, day, isLeap)
       if (!solarlunarDate || typeof solarlunarDate !== 'object') {
