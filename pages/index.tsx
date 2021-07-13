@@ -158,6 +158,7 @@ export default function Home() {
           </Form>
           {icsURL && (
             <TextField
+              label="订阅地址（复制导入日历 App）"
               readOnly
               textarea
               fullwidth
