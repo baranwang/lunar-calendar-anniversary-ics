@@ -118,7 +118,7 @@ export default function Home() {
                           <TextField
                             className={styles.date}
                             type="date"
-                            label="日期"
+                            label="日期（公历）"
                             required
                           />
                         </Form.Field>
