@@ -1,0 +1,7 @@
+@import '@douyinfe/semi-ui/dist/css/semi.min.css';
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}

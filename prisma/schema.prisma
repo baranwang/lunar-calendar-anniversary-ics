@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./calendar.db"
+}
+
+model Day {
+  id             Int    @id @default(autoincrement()) @map("_id")
+  year           Int
+  month          Int
+  day            Int
+  weekday        Int
+  lunarYear      Int    @map("lunar_year")
+  lunarMonth     Int    @map("lunar_month")
+  lunarDay       Int    @map("lunar_day")
+  isLeapMonth    Int    @map("is_leap_month")
+  lunarYearName  String @map("lunar_year_name")
+  lunarMonthName String @map("lunar_month_name")
+  lunarDayName   String @map("lunar_day_name")
+  solarTerm      Int    @map("solar_term")
+  solarTermName  String @map("solar_term_name")
+  zodiac         Int
+  zodiacName     String @map("zodiac_name")
+  raw            String
+
+  @@map("days")
+}

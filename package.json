@@ -3,22 +3,30 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@douyinfe/semi-icons": "^2.63.1",
+    "@douyinfe/semi-ui": "^2.63.1",
+    "@prisma/client": "^5.17.0",
+    "handlebars": "^4.7.8",
+    "ics": "^3.7.6",
+    "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.5"
+    "swr": "^2.2.5"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
-    "eslint-config-next": "14.2.5"
+    "eslint-config-next": "14.2.5",
+    "prisma": "^5.17.0",
+    "sass": "^1.77.8",
+    "typescript": "^5"
   }
 }

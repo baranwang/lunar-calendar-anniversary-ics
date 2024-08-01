@@ -1,0 +1,17 @@
+@use '@douyinfe/semi-theme-default/scss/index.scss' as semi;
+
+.preview-item {
+  @at-root #{&}#{&}#{&}#{&} {
+    background-color: var(--semi-color-primary-light-hover);
+    border-radius: var(--semi-border-radius-extra-small);
+    padding: semi.$spacing-super-tight semi.$spacing-tight;
+    margin: 0 semi.$spacing-tight;
+    font-size: semi.$font-size-small;
+    line-height: 16px;
+  }
+}
+
+.lunar-text {
+  position: absolute;
+  left: semi.$spacing-super-tight;
+}
