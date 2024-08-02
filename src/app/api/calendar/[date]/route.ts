@@ -1,10 +1,10 @@
 import { prisma } from '@/lib/prisma';
-import { format as dateFormat } from 'date-fns';
+import { format as dateFormat, parse as dateParse } from 'date-fns';
 
 import type { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest, context: { params: { date: string } }) {
-  const date = new Date(+context.params.date);
+  const date = dateParse(context.params.date, 'yyyyMM', new Date());
   const days = await prisma.day.findMany({
     where: {
       year: date.getFullYear(),

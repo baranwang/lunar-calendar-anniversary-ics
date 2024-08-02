@@ -1,3 +1,4 @@
+import { commonDisabledDate } from '@/app/constants/common';
 import { IconMinusCircle, IconPlus } from '@douyinfe/semi-icons';
 import { ArrayField, Button, Card, Col, Form, Popconfirm, Row } from '@douyinfe/semi-ui';
 import { Subscription } from '../subscription';
@@ -17,7 +18,7 @@ export const Editor: React.FC = () => {
                 <Card key={item.key} className={styles.item}>
                   <Row type='flex' justify='space-between'>
                     <Col>
-                      <Form.DatePicker field={`${item.field}[day]`} label='日期（公历）' />
+                      <Form.DatePicker field={`${item.field}[day]`} label='日期（公历）' disabledDate={commonDisabledDate} />
                     </Col>
                     <Col>
                       <Popconfirm title='确定删除？' content='此操作不可逆' onConfirm={item.remove}>

@@ -1,5 +1,5 @@
 import { EventType } from '@/app/api/preview/route';
-import { MAX_YEAR } from '@/app/constants/common';
+import { commonDisabledDate } from '@/app/constants/common';
 import { useFormDays } from '@/app/hooks/use-form-days';
 import { Calendar, DatePicker } from '@douyinfe/semi-ui';
 import { format as dateFormat } from 'date-fns';
@@ -37,26 +37,11 @@ export const Preview: React.FC = () => {
     }
   }, [data]);
 
-  const { data: calendar } = useSWR(['api/calendar', displayValue], ([url, date]) => fetch(`${url}/${date.getTime()}`).then((res) => res.json() as Promise<Record<string, string>>));
+  const { data: calendar } = useSWR(['api/calendar', displayValue], ([url, date]) => fetch(`${url}/${dateFormat(date, 'yyyyMM')}`).then((res) => res.json() as Promise<Record<string, string>>));
 
   return (
     <Calendar
-      header={
-        <DatePicker
-          type='month'
-          value={displayValue}
-          disabledDate={(date) => {
-            if (!date) {
-              return false;
-            }
-            if (date.getFullYear() > MAX_YEAR) {
-              return true;
-            }
-            return false;
-          }}
-          onChange={setDisplayValue as any}
-        />
-      }
+      header={<DatePicker type='month' value={displayValue} disabledDate={commonDisabledDate} onChange={setDisplayValue as any} />}
       displayValue={displayValue}
       mode='month'
       height='calc(100vh - 32px)'
