@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { format as dateFormat } from 'date-fns';
 
 import type { NextRequest } from 'next/server';
 
@@ -12,8 +13,8 @@ export async function GET(request: NextRequest, context: { params: { date: strin
       },
     },
   });
-  const result = days.reduce<Record<number, string>>((acc, day) => {
-    const key = new Date(day.year, day.month - 1, day.day).getTime();
+  const result = days.reduce<Record<string, string>>((acc, day) => {
+    const key = dateFormat(new Date(day.year, day.month - 1, day.day), 'yyyy-MM-dd');
     acc[key] = day.lunarDayName;
     if (day.lunarDay === 1) {
       acc[key] = day.lunarMonthName;

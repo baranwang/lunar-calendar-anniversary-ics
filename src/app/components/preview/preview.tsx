@@ -1,7 +1,8 @@
 import { EventType } from '@/app/api/preview/route';
 import { MAX_YEAR } from '@/app/constants/common';
 import { useFormDays } from '@/app/hooks/use-form-days';
-import { Calendar, Card, DatePicker } from '@douyinfe/semi-ui';
+import { Calendar, DatePicker } from '@douyinfe/semi-ui';
+import { format as dateFormat } from 'date-fns';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 
@@ -36,7 +37,7 @@ export const Preview: React.FC = () => {
     }
   }, [data]);
 
-  const { data: calendar } = useSWR(['api/calendar', displayValue], ([url, date]) => fetch(`${url}/${date.getTime()}`).then((res) => res.json() as Promise<Record<number, string>>));
+  const { data: calendar } = useSWR(['api/calendar', displayValue], ([url, date]) => fetch(`${url}/${date.getTime()}`).then((res) => res.json() as Promise<Record<string, string>>));
 
   return (
     <Calendar
@@ -63,9 +64,8 @@ export const Preview: React.FC = () => {
       markWeekend
       weekStartsOn={1}
       dateGridRender={(_, date) => {
-        const timestamp = date?.valueOf();
-        if (calendar && timestamp) {
-          return <span className={styles['lunar-text']}>{calendar[timestamp]}</span>;
+        if (calendar && date) {
+          return <span className={styles['lunar-text']}>{calendar[dateFormat(date, 'yyyy-MM-dd')]}</span>;
         }
         return null;
       }}
