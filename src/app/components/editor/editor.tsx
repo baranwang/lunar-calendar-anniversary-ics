@@ -1,7 +1,9 @@
+'use client';
 import { commonDisabledDate } from '@/app/constants/common';
 import { IconMinusCircle, IconPlus } from '@douyinfe/semi-icons';
-import { ArrayField, Button, Card, Col, Form, Popconfirm, Row } from '@douyinfe/semi-ui';
+import { ArrayField, Button, Card, Col, Form, Popconfirm, Row, Space } from '@douyinfe/semi-ui';
 import { Subscription } from '../subscription';
+import { ImportIcs } from '../import-ics';
 
 import styles from './editor.module.scss';
 
@@ -31,9 +33,12 @@ export const Editor: React.FC = () => {
               ))}
             </div>
             <div className={styles.toolbar}>
-              <Button icon={<IconPlus />} onClick={() => addWithInitValue({ temp: DEFAULT_TEMP })}>
-                添加新纪念日
-              </Button>
+              <Space>
+                <Button icon={<IconPlus />} onClick={() => addWithInitValue({ temp: DEFAULT_TEMP })}>
+                  添加新纪念日
+                </Button>
+                <ImportIcs />
+              </Space>
               <Subscription />
             </div>
           </div>
