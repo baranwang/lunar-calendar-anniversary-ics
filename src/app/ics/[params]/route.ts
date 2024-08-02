@@ -3,6 +3,7 @@ import { decompressFromBase64 } from '@/lib/deflate';
 import { prisma } from '@/lib/prisma';
 import handlebars from 'handlebars';
 import * as ics from 'ics';
+import { createHash } from 'node:crypto';
 
 import type { NextRequest } from 'next/server';
 
@@ -20,6 +21,14 @@ export async function GET(request: NextRequest, context: { params: Params }) {
   if (!data) {
     return new Response('');
   }
+
+  const hash = createHash('sha256');
+  hash.update(JSON.stringify(context.params.params));
+  const etag = hash.digest('hex');
+  if (etag === request.headers.get('if-none-match')) {
+    return new Response(null, { status: 304 });
+  }
+
   const events: ics.EventAttributes[] = [];
   for (const item of data) {
     const [date, temp] = item;
@@ -49,5 +58,8 @@ export async function GET(request: NextRequest, context: { params: Params }) {
   if (error) {
     return new Response(error.message, { status: 500 });
   }
-  return new Response(value);
+
+  const headers = new Headers();
+  headers.set('etag', etag);
+  return new Response(value, { headers });
 }

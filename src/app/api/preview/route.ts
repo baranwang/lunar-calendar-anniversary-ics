@@ -1,8 +1,8 @@
 import { FormType } from '@/app/hooks/use-form-days';
-import { NextRequest } from 'next/server';
+import { fetchAnniversary } from '@/lib/days';
 import { prisma } from '@/lib/prisma';
 import handlebars from 'handlebars';
-import { fetchAnniversary } from '@/lib/days';
+import { NextRequest } from 'next/server';
 
 export interface EventType {
   start: Date;

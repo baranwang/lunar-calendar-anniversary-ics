@@ -4,7 +4,14 @@ import { format as dateFormat, parse as dateParse } from 'date-fns';
 import type { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest, context: { params: { date: string } }) {
-  const date = dateParse(context.params.date, 'yyyyMM', new Date());
+  const dateStr = context.params.date;
+  if (!dateStr) {
+    return new Response(null, { status: 400 });
+  }
+  if (dateStr === request.headers.get('if-none-match')) {
+    return new Response(null, { status: 304 });
+  }
+  const date = dateParse(dateStr, 'yyyyMM', new Date());
   const days = await prisma.day.findMany({
     where: {
       year: date.getFullYear(),
@@ -21,5 +28,10 @@ export async function GET(request: NextRequest, context: { params: { date: strin
     }
     return acc;
   }, {});
-  return new Response(JSON.stringify(result));
+  const headers = new Headers();
+  headers.set('etag', dateStr);
+  headers.set('cache-control', 'public, max-age=3600');
+  return new Response(JSON.stringify(result), {
+    headers,
+  });
 }
