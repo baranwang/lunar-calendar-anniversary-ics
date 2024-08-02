@@ -1,7 +1,14 @@
 import { PrismaClient } from '@prisma/client';
+import path from 'path';
 
 const prismaClientSingleton = () => {
-  return new PrismaClient();
+  return new PrismaClient({
+    datasources: {
+      db: {
+        url: `file:${path.join(process.cwd(), 'prisma/calendar.db')}`,
+      },
+    },
+  });
 };
 
 declare const globalThis: {
