@@ -1,6 +1,6 @@
 import { useFormDays } from '@/app/hooks/use-form-days';
-import { compressToBase64 } from '@/lib/deflate';
-import { Form, TextArea, useFormState } from '@douyinfe/semi-ui';
+import { compressToBase64 } from '@/lib/compress';
+import { Form, TextArea } from '@douyinfe/semi-ui';
 import { useMemo } from 'react';
 import useSWR from 'swr';
 

@@ -1,11 +1,9 @@
-import { fetchAnniversary } from '@/lib/days';
-import { decompressFromBase64 } from '@/lib/deflate';
-import { prisma } from '@/lib/prisma';
-import handlebars from 'handlebars';
-import * as ics from 'ics';
-import { createHash } from 'node:crypto';
 
+import { decompressFromBase64 } from '@/lib/compress';
+import { fetchAnniversary } from '@/lib/days';
+import * as ics from 'ics';
 import type { NextRequest } from 'next/server';
+import { createHash } from 'node:crypto';
 
 type Params = {
   params: string;
@@ -32,24 +30,12 @@ export async function GET(request: NextRequest, context: { params: Params }) {
   const events: ics.EventAttributes[] = [];
   for (const item of data) {
     const [date, temp] = item;
-    const day = new Date(date);
-    const dayData = await prisma.day.findFirst({
-      where: {
-        year: day.getFullYear(),
-        month: day.getMonth() + 1,
-        day: day.getDate(),
-      },
-    });
-    if (!dayData) {
-      continue;
-    }
-    const template = handlebars.compile(temp);
-    const anniversaries = await fetchAnniversary(dayData);
+    const anniversaries = await fetchAnniversary(new Date(date), temp);
     anniversaries.forEach((anniversary) => {
       events.push({
-        start: [anniversary.year, anniversary.month, anniversary.day],
+        start: [anniversary.year, anniversary.month, anniversary.date],
         duration: { days: 1 },
-        title: template({ years: anniversary.year - day.getFullYear() }),
+        title: anniversary.title,
       });
     });
   }

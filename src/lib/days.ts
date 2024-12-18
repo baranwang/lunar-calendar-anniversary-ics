@@ -1,47 +1,41 @@
-import { prisma } from './prisma';
+import handlebars from 'handlebars';
+import { LunarDay, LunarYear, SolarDay } from "tyme4ts";
 
-import type { Day, Prisma } from '@prisma/client';
+export const fetchAnniversary = async (startDate: Date, titleTemplate: string) => {
+  const lunarStartDate = SolarDay.fromYmd(
+    startDate.getFullYear(),
+    startDate.getMonth() + 1,
+    startDate.getDate()
+  ).getLunarDay();
 
-export const fetchAnniversary = async (day: Day, take?: number) => {
-  const where: Prisma.DayFindManyArgs['where'] = {
-    lunarYear: {
-      gt: day.lunarYear,
-    },
-    lunarMonth: day.lunarMonth,
-    lunarDay: day.lunarDay,
-  };
-  if (day.isLeapMonth) {
-    const leapYears = await prisma.day
-      .findMany({
-        where: {
-          lunarYear: {
-            gt: day.lunarYear,
-          },
-          lunarMonth: day.lunarMonth,
-          lunarDay: day.lunarDay,
-          isLeapMonth: { equals: 1 },
-        },
-      })
-      .then((res) => res.map((item) => item.lunarYear));
-    where.OR = [
-      {
-        isLeapMonth: 1,
-      },
-      {
-        AND: [{ isLeapMonth: 0 }, { lunarYear: { notIn: leapYears } }],
-      },
-    ];
-  } else {
-    where.isLeapMonth = { not: 1 };
-  }
-  const args: Prisma.DayFindManyArgs = {
-    where,
-    orderBy: {
-      lunarYear: 'asc',
-    },
-  };
-  if (take) {
-    args.take = take;
-  }
-  return prisma.day.findMany(args);
+  const compileTitle = handlebars.compile(titleTemplate);
+
+  return Array.from({ length: 2100 - lunarStartDate.getYear() }, (_, offset) => {
+    const targetLunarYear = lunarStartDate.getYear() + offset + 1;
+    let targetLunarMonth = lunarStartDate.getMonth();
+
+    // 处理闰月逻辑
+    if (
+      targetLunarMonth < 0 &&
+      LunarYear.fromYear(targetLunarYear).getLeapMonth() !== -targetLunarMonth
+    ) {
+      targetLunarMonth = -targetLunarMonth;
+    }
+
+    const targetSolarDate = LunarDay.fromYmd(
+      targetLunarYear,
+      targetLunarMonth,
+      lunarStartDate.getDay()
+    ).getSolarDay();
+
+    // 计算农历年份差
+    const anniversaryLunarYearDiff = targetLunarYear - lunarStartDate.getYear();
+
+    return {
+      year: targetSolarDate.getYear(),
+      month: targetSolarDate.getMonth(),
+      date: targetSolarDate.getDay(),
+      title: compileTitle({ years: anniversaryLunarYearDiff })
+    };
+  });
 };

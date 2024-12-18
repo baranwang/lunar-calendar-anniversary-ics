@@ -2,9 +2,9 @@ import { EventType } from '@/app/api/preview/route';
 import { commonDisabledDate } from '@/app/constants/common';
 import { useFormDays } from '@/app/hooks/use-form-days';
 import { Calendar, DatePicker } from '@douyinfe/semi-ui';
-import { format as dateFormat } from 'date-fns';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
+import { SolarDay } from "tyme4ts";
 
 import type { CalendarProps } from '@douyinfe/semi-ui/lib/es/calendar/interface';
 
@@ -37,7 +37,6 @@ export const Preview: React.FC = () => {
     }
   }, [data]);
 
-  const { data: calendar } = useSWR(['api/calendar', displayValue], ([url, date]) => fetch(`${url}/${dateFormat(date, 'yyyyMM')}`).then((res) => res.json() as Promise<Record<string, string>>));
 
   return (
     <Calendar
@@ -49,8 +48,9 @@ export const Preview: React.FC = () => {
       markWeekend
       weekStartsOn={1}
       dateGridRender={(_, date) => {
-        if (calendar && date) {
-          return <span className={styles['lunar-text']}>{calendar[dateFormat(date, 'yyyy-MM-dd')]}</span>;
+        if (date) {
+          const lunarDay = SolarDay.fromYmd(date.getFullYear(), date.getMonth() + 1, date.getDate()).getLunarDay();
+          return <span className={styles['lunar-text']}>{lunarDay.getName()}</span>;
         }
         return null;
       }}

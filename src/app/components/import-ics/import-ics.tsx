@@ -1,5 +1,5 @@
 'use client';
-import { decompressFromBase64 } from '@/lib/deflate';
+import { decompressFromBase64 } from '@/lib/compress';
 import { Button, Form, Modal, useFormApi } from '@douyinfe/semi-ui';
 import { useRef, useState } from 'react';
 

@@ -3,32 +3,30 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "postinstall": "prisma generate",
     "dev": "next dev --turbo",
-    "build": "prisma generate && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@douyinfe/semi-icons": "^2.63.1",
-    "@douyinfe/semi-illustrations": "^2.63.1",
-    "@douyinfe/semi-ui": "^2.63.1",
-    "@prisma/client": "^5.17.0",
+    "@douyinfe/semi-icons": "^2.71.3",
+    "@douyinfe/semi-illustrations": "^2.71.3",
+    "@douyinfe/semi-ui": "^2.71.3",
     "date-fns": "^2.29.3",
     "handlebars": "^4.7.8",
     "ics": "^3.7.6",
-    "next": "14.2.5",
+    "next": "^14",
     "react": "^18",
     "react-dom": "^18",
-    "swr": "^2.2.5"
+    "swr": "^2.2.5",
+    "tyme4ts": "^1.1.8"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.5",
-    "prisma": "^5.17.0",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.1",
     "sass": "^1.77.8",
     "typescript": "^5"
   }
