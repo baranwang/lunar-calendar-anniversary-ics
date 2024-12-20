@@ -1,40 +1,23 @@
+import dayjs from 'dayjs';
+import { PluginLunar } from "dayjs-plugin-lunar";
 import handlebars from 'handlebars';
-import { LunarDay, LunarYear, SolarDay } from "tyme4ts";
+
+dayjs.extend(PluginLunar);
+
+export { dayjs }
 
 export const fetchAnniversary = async (startDate: Date, titleTemplate: string) => {
-  const lunarStartDate = SolarDay.fromYmd(
-    startDate.getFullYear(),
-    startDate.getMonth() + 1,
-    startDate.getDate()
-  ).getLunarDay();
-
+  const lunarStartDate = dayjs.lunar(startDate.getFullYear(), startDate.getMonth() + 1, startDate.getDate());
   const compileTitle = handlebars.compile(titleTemplate);
+  const lunarStartYear = lunarStartDate.toLunarYear().getYear();
 
-  return Array.from({ length: 2100 - lunarStartDate.getYear() }, (_, offset) => {
-    const targetLunarYear = lunarStartDate.getYear() + offset + 1;
-    let targetLunarMonth = lunarStartDate.getMonth();
-
-    // 处理闰月逻辑
-    if (
-      targetLunarMonth < 0 &&
-      LunarYear.fromYear(targetLunarYear).getLeapMonth() !== -targetLunarMonth
-    ) {
-      targetLunarMonth = -targetLunarMonth;
-    }
-
-    const targetSolarDate = LunarDay.fromYmd(
-      targetLunarYear,
-      targetLunarMonth,
-      lunarStartDate.getDay()
-    ).getSolarDay();
-
-    // 计算农历年份差
-    const anniversaryLunarYearDiff = targetLunarYear - lunarStartDate.getYear();
-
+  return Array.from({ length: 2100 - lunarStartYear }, (_, offset) => {
+    const targetDate = lunarStartDate.addLunar(offset + 1, 'year')
+    const anniversaryLunarYearDiff = targetDate.toLunarYear().getYear() - lunarStartYear;
     return {
-      year: targetSolarDate.getYear(),
-      month: targetSolarDate.getMonth(),
-      date: targetSolarDate.getDay(),
+      year: targetDate.year(),
+      month: targetDate.month() + 1,
+      date: targetDate.date(),
       title: compileTitle({ years: anniversaryLunarYearDiff })
     };
   });

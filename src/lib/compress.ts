@@ -7,5 +7,5 @@ export async function compressToBase64(str: string) {
 
 // Base64解码并解压字符串
 export async function decompressFromBase64(base64Str: string) {
-  return inflateSync(new Uint8Array(Buffer.from(base64Str, 'base64'))).toString();
+  return inflateSync(Buffer.from(base64Str, 'base64')).toString();
 }

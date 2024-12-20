@@ -12,14 +12,14 @@
     "@douyinfe/semi-icons": "^2.71.3",
     "@douyinfe/semi-illustrations": "^2.71.3",
     "@douyinfe/semi-ui": "^2.71.3",
-    "date-fns": "^2.29.3",
+    "dayjs": "^1.11.13",
+    "dayjs-plugin-lunar": "^1.1.0",
     "handlebars": "^4.7.8",
     "ics": "^3.7.6",
     "next": "^14",
     "react": "^18",
     "react-dom": "^18",
-    "swr": "^2.2.5",
-    "tyme4ts": "^1.1.8"
+    "swr": "^2.2.5"
   },
   "devDependencies": {
     "@types/node": "^20",

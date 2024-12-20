@@ -1,12 +1,11 @@
 import { EventType } from '@/app/api/preview/route';
 import { commonDisabledDate } from '@/app/constants/common';
 import { useFormDays } from '@/app/hooks/use-form-days';
+import { dayjs } from '@/lib/days';
 import { Calendar, DatePicker } from '@douyinfe/semi-ui';
+import type { CalendarProps } from '@douyinfe/semi-ui/lib/es/calendar/interface';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
-import { SolarDay } from "tyme4ts";
-
-import type { CalendarProps } from '@douyinfe/semi-ui/lib/es/calendar/interface';
 
 import styles from './preview.module.scss';
 
@@ -49,8 +48,8 @@ export const Preview: React.FC = () => {
       weekStartsOn={1}
       dateGridRender={(_, date) => {
         if (date) {
-          const lunarDay = SolarDay.fromYmd(date.getFullYear(), date.getMonth() + 1, date.getDate()).getLunarDay();
-          return <span className={styles['lunar-text']}>{lunarDay.getName()}</span>;
+          const lunarDay = dayjs(date).toLunarDay()
+          return <span className={styles['lunar-text']}>{lunarDay.getDay() === 1 ? lunarDay.getLunarMonth().getName() : ''}{lunarDay.getName()}</span>;
         }
         return null;
       }}
